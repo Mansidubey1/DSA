@@ -1,47 +1,45 @@
 class Solution {
 public:
-    vector<int> searchRange(vector<int>& nums, int target) {
+    vector<int> searchRange(vector<int>& nums, int x) {
                 vector<int> arr = {-1 , -1} ;
-                int first =0 , sec = 0 ;
+              int low = 0, high = nums.size() - 1;
+        int ans = nums.size();
 
-        if(nums.size()==0){
-            return arr ;
-        }
-          int low = 0 ;
-       int high = nums.size()-1 ;
-       int mid =0 ;
-      while(low<=high){
-        mid = (low+high)/2 ;
-        if(target<nums[mid]){
-            high = mid-1 ;
-        }
-        else if(target==nums[mid]){
-            first = mid ;
-                  arr[0] = first ;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
 
-          high = mid-1 ; 
-                }
-        else {
-            low = mid+1 ;
+            if (nums[mid] >= x) {
+                ans = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
         }
-      }
-      low = 0 ;
-       high = nums.size()-1 ;
-       while(low<=high){
-        mid = (low+high)/2 ;
-        if(target<nums[mid]){
-            high = mid-1 ;
-        }
-        else if(target==nums[mid]){
-            sec = mid ;
-                  arr[1] = sec ;
 
-            low = mid +1 ; 
-                }
-        else {
-            low = mid+1 ;
+        // x is not present
+        if (ans == nums.size() || nums[ans] != x)
+            return arr;
+
+        arr[0] = ans;
+
+        // Upper bound: first index nums[i] > x
+        low = 0;
+        high = nums.size() - 1;
+        ans = nums.size();
+
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+
+            if (nums[mid] > x) {
+                ans = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
         }
-      }
-        return arr ;
+
+        arr[1] = ans - 1;
+
+        return arr;
     }
 };
